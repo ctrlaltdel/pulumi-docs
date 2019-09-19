@@ -51,6 +51,7 @@ import * as cloud from "@pulumi/cloud";
     <li><a href="#hourly"><span class="symbol api"></span>hourly</a></li>
     <li><a href="#HourlySchedule"><span class="symbol api"></span>HourlySchedule</a></li>
     <li><a href="#HttpDeployment"><span class="symbol api"></span>HttpDeployment</a></li>
+    <li><a href="#HttpEndpoint"><span class="symbol api"></span>HttpEndpoint</a></li>
     <li><a href="#interval"><span class="symbol api"></span>interval</a></li>
     <li><a href="#IntervalRate"><span class="symbol api"></span>IntervalRate</a></li>
     <li><a href="#PrimaryKeyType"><span class="symbol api"></span>PrimaryKeyType</a></li>
@@ -939,6 +940,13 @@ should be mapped using a DNS A record.
 
 The URL at which the HttpDeployment is available to the Internet.
 
+<h3 class="pdoc-module-header" id="HttpEndpoint" data-link-title="HttpEndpoint">
+    <a href="https://github.com/pulumi/pulumi-cloud/blob/002c3b023df245e42f7721c999f13ca40e7afbaf/api/api.ts#L300">
+        type <strong>HttpEndpoint</strong>
+    </a> <span class="badge badge-deprecated">DEPRECATED</span>
+</h3>
+
+<pre class="highlight"><code><span class='kd'>type</span> HttpEndpoint = <a href='#API'>API</a>;</code></pre>
 <h3 class="pdoc-module-header" id="interval" data-link-title="interval">
     <a href="https://github.com/pulumi/pulumi-cloud/blob/002c3b023df245e42f7721c999f13ca40e7afbaf/api/timer.ts#L75">
         function <strong>interval</strong>
