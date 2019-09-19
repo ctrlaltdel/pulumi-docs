@@ -179,6 +179,22 @@ func hasTag(node *typeDocNode, value string) bool {
 	return false
 }
 
+func getTag(node *typeDocNode, value string) (string, bool) {
+	for _, tag := range node.Comment.Tags {
+		if tag.Tag == value {
+			return tag.Text, true
+		}
+	}
+
+	// typedoc represents tags on a method/function by placing the tag on the 'Signature' of
+	// that item. If we only have one signature, look for the tag on it.
+	if len(node.Signatures) == 1 {
+		return getTag(node.Signatures[0], value)
+	}
+
+	return "", false
+}
+
 // emitMarkdownDocs takes as input a full Typedoc AST, transforms it into Markdown suitable for our documentation
 // website, and emits those files into the target directory.  If the target doesn't exist, it will be created.
 func emitMarkdownDocs(srcdir, pkgname string, doc *typeDocNode, outdir, outdatadir, pkgRepoDir, githash string) error {
@@ -293,9 +309,9 @@ func (e *emitter) augmentNode(node *typeDocNode, parent *typeDocNode, k8s bool) 
 		node.IsDataSource = true
 	}
 
-	if hasTag(node, "deprecated") {
-		node.IsDeprecated = true
-	}
+	deprecatedMessage, hasDeprecatedMessage := getTag(node, "deprecated")
+	node.HasDeprecatedMessage = hasDeprecatedMessage
+	node.DeprecatedMessage = deprecatedMessage
 
 	// Convert <h3>'s to be <h5>'s, and <h2>'s to be <h4>'s.
 	node.Comment.ShortText = h3RE.ReplaceAllString(node.Comment.ShortText, h5)
@@ -1396,8 +1412,10 @@ type typeDocNode struct {
 	IsResource bool
 	// IsDataSource is true if the node represents a Pulumi data source.
 	IsDataSource bool
-	// IsDeprecated is true if the node has "deprecated" comment tag.
-	IsDeprecated bool
+	// HasDeprecatedMessage is true if the node has "deprecated" comment tag.
+	HasDeprecatedMessage bool
+	// The text fo the deprecated comment tag.
+	DeprecatedMessage string
 }
 
 type typeDocFlags struct {
